@@ -104,8 +104,8 @@ sectors:
     macro: rates
     targets:
       - {type: company, id: JPM, name: 摩根大通, market: US, listed: true, reason: 持仓}
-      - {type: company, id: 长江电力, market: CN, listed: true, reason: A股红利标杆}
-      - {type: company, id: 工商银行, market: CN, listed: true, reason: A股红利标杆}
+      - {type: company, id: 长江电力, ticker: 600900, market: CN, listed: true, reason: A股红利标杆}
+      - {type: company, id: 工商银行, ticker: 601398, market: CN, listed: true, reason: A股红利标杆}
 
   # ---- 地缘与供应 ----
   - id: oil_chokepoint
@@ -116,8 +116,8 @@ sectors:
       - {type: macro,   id: opec,          name: OPEC,        listed: false, reason: thesis, links_assets: [WTI]}
       - {type: company, id: XOM, name: 埃克森美孚, market: US, listed: true, reason: WTI的股票表达}
       - {type: company, id: CVX, name: 雪佛龙,     market: US, listed: true, reason: WTI的股票表达}
-      - {type: company, id: 中国海油, market: CN, listed: true, reason: A股标杆}
-      - {type: company, id: 中国石油, market: CN, listed: true, reason: A股标杆}
+      - {type: company, id: 中国海油, ticker: 600938, market: CN, listed: true, reason: A股标杆}
+      - {type: company, id: 中国石油, ticker: 601857, market: CN, listed: true, reason: A股标杆}
 
   - id: russia_ukraine
     name: 俄乌战争
@@ -126,8 +126,8 @@ sectors:
       - {type: macro,   id: russia-ukraine-war, name: 俄乌战争, listed: false, reason: thesis, links_assets: [WTI, XAU]}
       - {type: company, id: LMT, name: 洛克希德马丁, market: US, listed: true, reason: 国防标杆}
       - {type: company, id: RTX, name: 雷神,         market: US, listed: true, reason: 国防标杆}
-      - {type: company, id: 中航沈飞, market: CN, listed: true, reason: A股军工标杆}
-      - {type: company, id: 中兵红箭, market: CN, listed: true, reason: A股军工标杆}
+      - {type: company, id: 中航沈飞, ticker: 600760, market: CN, listed: true, reason: A股军工标杆}
+      - {type: company, id: 中兵红箭, ticker: 000519, market: CN, listed: true, reason: A股军工标杆}
 
   - id: safe_haven_gold
     name: 避险与央行购金
@@ -135,8 +135,8 @@ sectors:
     targets:
       - {type: company, id: NEM,  name: 纽蒙特,  market: US, listed: true, reason: 黄金的股票表达}
       - {type: company, id: GOLD, name: 巴里克,  market: US, listed: true, reason: 黄金的股票表达}
-      - {type: company, id: 山东黄金, market: CN, listed: true, reason: A股标杆}
-      - {type: company, id: 紫金矿业, market: CN, listed: true, reason: A股标杆}
+      - {type: company, id: 山东黄金, ticker: 600547, market: CN, listed: true, reason: A股标杆}
+      - {type: company, id: 紫金矿业, ticker: 601899, market: CN, listed: true, reason: A股标杆}
 
   # ---- AI 资本开支 ----
   - id: ai_compute_chips
@@ -149,8 +149,8 @@ sectors:
       - {type: company, id: AMD,  name: 美国超威, market: US, listed: true, reason: Park指定}
       - {type: company, id: AVGO, name: 博通,     market: US, listed: true, reason: Park指定}
       - {type: company, id: MRVL, name: 迈威尔,   market: US, listed: true, reason: Park指定}
-      - {type: company, id: 寒武纪,   market: CN, listed: true, reason: A股标杆}
-      - {type: company, id: 海光信息, market: CN, listed: true, reason: A股标杆}
+      - {type: company, id: 寒武纪, ticker: 688256,   market: CN, listed: true, reason: A股标杆}
+      - {type: company, id: 海光信息, ticker: 688041, market: CN, listed: true, reason: A股标杆}
 
   - id: memory_hbm
     name: 存储与 HBM
@@ -160,7 +160,7 @@ sectors:
       - {type: company, id: SNDK, name: 闪迪,     market: US, listed: true, reason: Park指定}
       - {type: company, id: WDC,  name: 西部数据, market: US, listed: true, reason: Park指定}
       - {type: company, id: "000660.KS", name: SK海力士, market: KR, listed: true, reason: HBM龙头}
-      - {type: company, id: 兆易创新, market: CN, listed: true, reason: A股标杆}
+      - {type: company, id: 兆易创新, ticker: 603986, market: CN, listed: true, reason: A股标杆}
 
   - id: cxmt_solo
     name: 长鑫科技 · 单体
@@ -180,10 +180,10 @@ sectors:
       - {type: company, id: LRCX, name: 拉姆研究, market: US, listed: true, reason: Park指定}
       - {type: company, id: AMAT, name: 应用材料, market: US, listed: true, reason: Park指定}
       - {type: company, id: INTC, name: 英特尔,   market: US, listed: true, reason: Park指定}
-      - {type: company, id: 中芯国际, market: CN, listed: true, reason: A股标杆}
-      - {type: company, id: 华虹公司, market: CN, listed: true, reason: A股标杆}
-      - {type: company, id: 北方华创, market: CN, listed: true, reason: A股设备标杆}
-      - {type: company, id: 中微公司, market: CN, listed: true, reason: A股设备标杆}
+      - {type: company, id: 中芯国际, ticker: 688981, market: CN, listed: true, reason: A股标杆}
+      - {type: company, id: 华虹公司, ticker: 688347, market: CN, listed: true, reason: A股标杆}
+      - {type: company, id: 北方华创, ticker: 002371, market: CN, listed: true, reason: A股设备标杆}
+      - {type: company, id: 中微公司, ticker: 688012, market: CN, listed: true, reason: A股设备标杆}
 
   - id: hyperscaler_capex
     name: 云厂商资本开支
@@ -194,8 +194,8 @@ sectors:
       - {type: company, id: AMZN,  name: 亚马逊, market: US, listed: true, reason: Park指定}
       - {type: company, id: META,  name: Meta,   market: US, listed: true, reason: Park指定}
       - {type: company, id: ORCL,  name: 甲骨文, market: US, listed: true, reason: Park指定}
-      - {type: company, id: 浪潮信息, market: CN, listed: true, reason: A股服务器标杆}
-      - {type: company, id: 中科曙光, market: CN, listed: true, reason: A股服务器标杆}
+      - {type: company, id: 浪潮信息, ticker: 000977, market: CN, listed: true, reason: A股服务器标杆}
+      - {type: company, id: 中科曙光, ticker: 603019, market: CN, listed: true, reason: A股服务器标杆}
 
   - id: ai_generation
     name: AI 发电
@@ -206,8 +206,8 @@ sectors:
       - {type: company, id: CEG, name: Constellation, market: US, listed: true, reason: "22GW核电，供电微软/Meta 20年1.1GW长约"}
       - {type: company, id: VST, name: Vistra,        market: US, listed: true, reason: "2026-01与Meta签20年2.1GW+核电长约"}
       - {type: company, id: TLN, name: Talen,         market: US, listed: true, reason: "亚马逊Susquehanna长约至2042年，最高1920MW"}
-      - {type: company, id: 中国核电, market: CN, listed: true, reason: A股核电标杆}
-      - {type: company, id: 长江电力, market: CN, listed: true, reason: A股水电标杆}
+      - {type: company, id: 中国核电, ticker: 601985, market: CN, listed: true, reason: A股核电标杆}
+      - {type: company, id: 长江电力, ticker: 600900, market: CN, listed: true, reason: A股水电标杆}
 
   - id: power_equipment
     name: 电力设备与线缆
@@ -220,9 +220,9 @@ sectors:
       - {type: company, id: NVT,  name: nVent,    market: US, listed: true, reason: 电气保护}
       - {type: company, id: ATKR, name: Atkore,   market: US, listed: true, reason: "线管/桥架/支架，最贴近电缆层"}
       - {type: company, id: GEV,  name: GE Vernova, market: US, listed: true, reason: 燃机与电网设备}
-      - {type: company, id: 特变电工, market: CN, listed: true, reason: A股变压器标杆}
-      - {type: company, id: 平高电气, market: CN, listed: true, reason: A股开关标杆}
-      - {type: company, id: 中天科技, market: CN, listed: true, reason: A股线缆标杆}
+      - {type: company, id: 特变电工, ticker: 600089, market: CN, listed: true, reason: A股变压器标杆}
+      - {type: company, id: 平高电气, ticker: 600312, market: CN, listed: true, reason: A股开关标杆}
+      - {type: company, id: 中天科技, ticker: 600522, market: CN, listed: true, reason: A股线缆标杆}
 
   - id: optical_interconnect
     name: 光通信与互连
@@ -233,9 +233,9 @@ sectors:
       - {type: company, id: GLW,  name: 康宁,   market: US, listed: true, reason: Park指定，光纤}
       - {type: company, id: MRVL, name: 迈威尔, market: US, listed: true, reason: Park指定，光DSP}
       - {type: company, id: COHR, name: Coherent, market: US, listed: true, reason: 光模块标杆}
-      - {type: company, id: 中际旭创, market: CN, listed: true, reason: A股光模块标杆}
-      - {type: company, id: 新易盛,   market: CN, listed: true, reason: A股光模块标杆}
-      - {type: company, id: 天孚通信, market: CN, listed: true, reason: A股光器件标杆}
+      - {type: company, id: 中际旭创, ticker: 300308, market: CN, listed: true, reason: A股光模块标杆}
+      - {type: company, id: 新易盛, ticker: 300502,   market: CN, listed: true, reason: A股光模块标杆}
+      - {type: company, id: 天孚通信, ticker: 300394, market: CN, listed: true, reason: A股光器件标杆}
 
   - id: edge_consumer
     name: 端侧与消费电子
@@ -243,8 +243,8 @@ sectors:
     targets:
       - {type: company, id: AAPL, name: 苹果, market: US, listed: true, reason: Park指定}
       - {type: company, id: QCOM, name: 高通, market: US, listed: true, reason: Park指定}
-      - {type: company, id: 立讯精密, market: CN, listed: true, reason: A股标杆}
-      - {type: company, id: 歌尔股份, market: CN, listed: true, reason: A股标杆}
+      - {type: company, id: 立讯精密, ticker: 002475, market: CN, listed: true, reason: A股标杆}
+      - {type: company, id: 歌尔股份, ticker: 002241, market: CN, listed: true, reason: A股标杆}
 
   - id: model_application
     name: 模型与应用层
@@ -257,8 +257,8 @@ sectors:
       - {type: company, id: "00100", name: MiniMax, market: HK, listed: true, reason: "Park指定；AI模型与应用层重要观察对象"}
       - {type: company, id: "02513", name: 智谱, market: HK, listed: true, reason: "Park指定；AI模型与应用层重要观察对象"}
       - {type: company, id: github, name: GitHub, listed: false, reason: "Park指定；开发者与AI生态基础设施观察对象；非独立上市公司"}
-      - {type: company, id: 科大讯飞, market: CN, listed: true, reason: A股标杆}
-      - {type: company, id: 金山办公, market: CN, listed: true, reason: A股标杆}
+      - {type: company, id: 科大讯飞, ticker: 002230, market: CN, listed: true, reason: A股标杆}
+      - {type: company, id: 金山办公, ticker: 688111, market: CN, listed: true, reason: A股标杆}
 
   - id: robotics_embodied
     name: 机器人与具身智能
@@ -269,8 +269,8 @@ sectors:
       - {type: company, id: figure, name: Figure,  listed: false, reason: 人形机器人标杆，未上市}
       - {type: company, id: "688836", name: 宇树科技, market: CN, listed: true,
          reason: A股人形机器人龙头, listed_at: "2026-08-19"}
-      - {type: company, id: 汇川技术, market: CN, listed: true, reason: A股运控标杆}
-      - {type: company, id: 绿的谐波, market: CN, listed: true, reason: A股谐波减速器标杆}
+      - {type: company, id: 汇川技术, ticker: 300124, market: CN, listed: true, reason: A股运控标杆}
+      - {type: company, id: 绿的谐波, ticker: 688017, market: CN, listed: true, reason: A股谐波减速器标杆}
 
   # ---- 风险偏好与加密 ----
   - id: crypto_core
@@ -305,9 +305,9 @@ sectors:
       - {type: company, id: NVO,  name: 诺和诺德, market: US, listed: true, reason: GLP-1龙头}
       - {type: company, id: VRTX, name: 福泰,     market: US, listed: true, reason: 创新药标杆}
       - {type: company, id: REGN, name: 再生元,   market: US, listed: true, reason: 创新药标杆}
-      - {type: company, id: 恒瑞医药, market: CN, listed: true, reason: A股标杆}
-      - {type: company, id: 百济神州, market: CN, listed: true, reason: A股标杆}
-      - {type: company, id: 药明康德, market: CN, listed: true, reason: A股CXO标杆}
+      - {type: company, id: 恒瑞医药, ticker: 600276, market: CN, listed: true, reason: A股标杆}
+      - {type: company, id: 百济神州, ticker: 688235, market: CN, listed: true, reason: A股标杆}
+      - {type: company, id: 药明康德, ticker: 603259, market: CN, listed: true, reason: A股CXO标杆}
 
   - id: platform_consumer
     name: 大消费与平台
@@ -332,9 +332,9 @@ sectors:
       - {type: company, id: RKLB, name: Rocket Lab, market: US, listed: true, reason: 赛道标杆}
       - {type: company, id: ASTS, name: AST SpaceMobile, market: US, listed: true, reason: 赛道标杆}
       - {type: company, id: spacex, name: SpaceX, listed: false, reason: 赛道龙头，未上市}
-      - {type: company, id: 中国卫星, market: CN, listed: true, reason: A股标杆}
-      - {type: company, id: 航天电子, market: CN, listed: true, reason: A股标杆}
-      - {type: company, id: 上海瀚讯, market: CN, listed: true, reason: A股标杆}
+      - {type: company, id: 中国卫星, ticker: 600118, market: CN, listed: true, reason: A股标杆}
+      - {type: company, id: 航天电子, ticker: 600879, market: CN, listed: true, reason: A股标杆}
+      - {type: company, id: 上海瀚讯, ticker: 300762, market: CN, listed: true, reason: A股标杆}
 
   # ---- 中国政策周期 ----
   - id: cn_policy_liquidity
