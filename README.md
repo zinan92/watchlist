@@ -48,6 +48,7 @@ root
   id: "688825"            # 上市公司用市场代码，其余用 slug
   name: 长鑫科技
   market: CN              # US | CN | KR | JP | FX | CRYPTO | COMDTY
+  ticker: "688825"        # 可选；A股/港股代码与实体 id 分开保存
   listed: true            # 未上市为 false，且不得有 id 形式的市场代码
   reason: "..."           # 必填：它为什么在表里
   links_assets: [STAR50]  # 可选：与哪些 assets 有直接传导关系
