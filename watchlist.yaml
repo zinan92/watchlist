@@ -322,7 +322,7 @@ sectors:
     name: 地缘冲突
     macro: geopolitics
     targets:
-      - {type: macro, id: geopolitical-crisis, name: 地缘冲突, listed: false, reason: "Park指定；承接不局限于中东或俄乌的地缘事件"}
+      - {type: macro, id: geopolitical-crisis, name: 地缘冲突, listed: false, reason: "Park指定；承接不局限于中东或俄乌的地缘事件", links_assets: [WTI, XAU]}
 
   - id: commercial_space
     name: 商业航天
