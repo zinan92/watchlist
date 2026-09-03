@@ -1,0 +1,268 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+</head>
+<body style="margin:0">
+<title>Park Exposure Tree</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans+Condensed:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+  :root {
+    --bg: #0a0d0e;
+    --panel: #12181a;
+    --panel-2: #171f21;
+    --border: #26312f;
+    --border-soft: #1c2426;
+    --text: #e9efec;
+    --dim: #8b9997;
+    --faint: #5b6763;
+    --accent: #e8a33d;
+    --unl: #e5484d;
+    --cn: #4fb0d9;
+    --mono: 'IBM Plex Mono', ui-monospace, 'SF Mono', Consolas, monospace;
+    --cond: 'IBM Plex Sans Condensed', system-ui, sans-serif;
+    --sans: 'IBM Plex Sans', system-ui, sans-serif;
+  }
+  @media (prefers-color-scheme: light) { :root:not([data-theme="light"]) { --bg: #0a0d0e; } }
+  :root[data-theme="dark"] { --bg: #0a0d0e; }
+
+  * { box-sizing: border-box; }
+  body { background: var(--bg); color: var(--text); font-family: var(--sans); margin: 0; line-height: 1.6; }
+  .wrap { max-width: 1120px; margin: 0 auto; padding: 30px 22px 60px; display: flex; flex-direction: column; gap: 28px; }
+
+  .masthead { border-bottom: 1px solid var(--border); padding-bottom: 15px; display: flex; flex-direction: column; gap: 6px; }
+  .eyebrow { font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.11em; text-transform: uppercase; color: var(--faint); }
+  h1 { font-family: var(--cond); font-size: 29px; font-weight: 700; margin: 0; letter-spacing: -0.01em; }
+  .sub { color: var(--dim); font-size: 13.5px; max-width: 68ch; margin: 0; }
+
+  section { display: flex; flex-direction: column; gap: 13px; }
+  h2 { font-family: var(--cond); font-size: 12px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--dim); margin: 0; padding-bottom: 8px; border-bottom: 1px solid var(--border-soft); }
+  p { margin: 0; font-size: 14px; max-width: 70ch; }
+  strong { color: var(--text); font-weight: 600; }
+
+  .split { display: grid; grid-template-columns: minmax(290px, 350px) 1fr; gap: 20px; align-items: start; }
+  @media (max-width: 900px) { .split { grid-template-columns: 1fr; } }
+
+  figure { margin: 0; display: flex; flex-direction: column; gap: 10px; }
+  .figbox { background: var(--panel); border: 1px solid var(--border); border-radius: 3px; padding: 6px 2px; overflow-x: auto; }
+  svg { display: block; min-width: 330px; max-width: 100%; height: auto; color: var(--text); }
+  figcaption { font-family: var(--mono); font-size: 11px; color: var(--faint); line-height: 1.7; }
+
+  table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+  .scroller { overflow-x: auto; background: var(--panel); border: 1px solid var(--border); border-radius: 3px; }
+  th, td { text-align: left; padding: 7px 9px; border-bottom: 1px solid var(--border-soft); vertical-align: top; }
+  thead th { font-family: var(--cond); font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--faint); border-bottom: 1px solid var(--border); background: var(--panel-2); }
+  td.sector { font-family: var(--cond); font-weight: 600; font-size: 13px; white-space: nowrap; }
+  td.us, td.cn { font-family: var(--mono); font-size: 11.5px; color: var(--dim); }
+  td.cn { color: var(--cn); }
+  tr.g-start td { border-top: 1px solid var(--border); }
+  tr.solo td.sector { color: var(--accent); }
+  .macro-tag { font-family: var(--mono); font-size: 9.5px; letter-spacing: 0.05em; color: var(--faint); display: block; font-weight: 400; }
+  .unl { color: var(--unl); }
+  .code { color: var(--faint); }
+
+  .legend { display: flex; flex-wrap: wrap; gap: 18px; font-family: var(--mono); font-size: 11.5px; color: var(--dim); }
+  .dot { display: inline-block; width: 7px; height: 7px; border-radius: 50%; margin-right: 6px; vertical-align: 1px; }
+
+  .callout { background: var(--panel); border: 1px solid var(--border); border-left: 3px solid var(--accent); padding: 14px 16px; display: flex; flex-direction: column; gap: 7px; }
+  .callout .ch { font-family: var(--cond); font-size: 14.5px; font-weight: 600; }
+  .callout p { font-size: 13.5px; }
+  .callouts { display: flex; flex-direction: column; gap: 12px; }
+
+  footer { border-top: 1px solid var(--border-soft); padding-top: 13px; font-family: var(--mono); font-size: 11px; color: var(--faint); line-height: 1.7; }
+</style>
+
+<div class="wrap">
+  <div class="masthead">
+    <div class="eyebrow">Park Exposure Registry · 三层结构 v4 · 2026-09-03</div>
+    <h1>Park Exposure Tree</h1>
+    <p class="sub">6 条宏观主线 · 24 个中观赛道 · 每个赛道美股与 A 股各配 2–3 个标杆。左边是结构，右边是名单。长鑫科技因体量单独成节点；AI 电力拆为发电与设备两条。</p>
+  </div>
+
+  <div class="split">
+    <figure>
+      <div class="figbox">
+        <svg viewBox="0 0 350 1060" role="img" aria-label="Park 三层敞口树的结构骨架：根节点分为六条宏观主线——货币与利率、地缘与供应、AI 资本开支、风险偏好与加密、独立产业周期、中国政策周期，共下挂 24 个中观赛道，其中 AI 资本开支占 11 个。">
+          <defs>
+            <marker id="ar" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="5" markerHeight="5" orient="auto">
+              <polygon points="0,1 7,4 0,7" fill="currentColor" opacity="0.45"></polygon>
+            </marker>
+          </defs>
+
+          <text x="40" y="26" font-family="IBM Plex Mono, monospace" font-size="9.5" fill="currentColor" opacity="0.4" text-anchor="middle" letter-spacing="1">ROOT</text>
+          <text x="148" y="26" font-family="IBM Plex Mono, monospace" font-size="9.5" fill="currentColor" opacity="0.4" text-anchor="middle" letter-spacing="1">宏观</text>
+          <text x="266" y="26" font-family="IBM Plex Mono, monospace" font-size="9.5" fill="currentColor" opacity="0.4" text-anchor="middle" letter-spacing="1">中观 · 赛道</text>
+          <line x1="10" y1="34" x2="342" y2="34" stroke="currentColor" opacity="0.13"></line>
+
+          <rect x="10" y="520" width="62" height="52" rx="2" fill="none" stroke="currentColor" stroke-opacity="0.55"></rect>
+          <text x="41" y="541" font-family="IBM Plex Sans Condensed, sans-serif" font-size="12" font-weight="600" fill="currentColor" text-anchor="middle">Park</text>
+          <text x="41" y="557" font-family="IBM Plex Sans Condensed, sans-serif" font-size="12" font-weight="600" fill="currentColor" text-anchor="middle">决策面</text>
+
+          <path d="M72 546 H82 V126 H94" fill="none" stroke="currentColor" stroke-opacity="0.28" marker-end="url(#ar)"></path>
+          <path d="M72 546 H82 V246 H94" fill="none" stroke="currentColor" stroke-opacity="0.28" marker-end="url(#ar)"></path>
+          <path d="M72 546 H82 V526 H94" fill="none" stroke="#e8a33d" stroke-opacity="0.85" marker-end="url(#ar)"></path>
+          <path d="M72 546 H82 V806 H94" fill="none" stroke="currentColor" stroke-opacity="0.28" marker-end="url(#ar)"></path>
+          <path d="M72 546 H82 V906 H94" fill="none" stroke="currentColor" stroke-opacity="0.28" marker-end="url(#ar)"></path>
+          <path d="M72 546 H82 V986 H94" fill="none" stroke="currentColor" stroke-opacity="0.28" marker-end="url(#ar)"></path>
+
+          <rect x="94" y="108" width="110" height="36" rx="2" fill="none" stroke="currentColor" stroke-opacity="0.5"></rect>
+          <text x="103" y="131" font-family="IBM Plex Sans Condensed, sans-serif" font-size="12.5" font-weight="600" fill="currentColor">货币与利率</text>
+          <rect x="94" y="228" width="110" height="36" rx="2" fill="none" stroke="currentColor" stroke-opacity="0.5"></rect>
+          <text x="103" y="251" font-family="IBM Plex Sans Condensed, sans-serif" font-size="12.5" font-weight="600" fill="currentColor">地缘与供应</text>
+          <rect x="94" y="508" width="110" height="36" rx="2" fill="none" stroke="#e8a33d" stroke-opacity="0.85"></rect>
+          <text x="103" y="531" font-family="IBM Plex Sans Condensed, sans-serif" font-size="12.5" font-weight="600" fill="#e8a33d">AI 资本开支</text>
+          <rect x="94" y="788" width="110" height="36" rx="2" fill="none" stroke="currentColor" stroke-opacity="0.5"></rect>
+          <text x="103" y="811" font-family="IBM Plex Sans Condensed, sans-serif" font-size="12.5" font-weight="600" fill="currentColor">风险偏好·加密</text>
+          <rect x="94" y="888" width="110" height="36" rx="2" fill="none" stroke="currentColor" stroke-opacity="0.5"></rect>
+          <text x="103" y="911" font-family="IBM Plex Sans Condensed, sans-serif" font-size="12.5" font-weight="600" fill="currentColor">独立产业周期</text>
+          <rect x="94" y="968" width="110" height="36" rx="2" fill="none" stroke="currentColor" stroke-opacity="0.5"></rect>
+          <text x="103" y="991" font-family="IBM Plex Sans Condensed, sans-serif" font-size="12.5" font-weight="600" fill="currentColor">中国政策周期</text>
+
+          <path d="M204 126 H218 V86 H232" fill="none" stroke="currentColor" stroke-opacity="0.26"></path>
+          <path d="M204 126 H218 V126 H232" fill="none" stroke="currentColor" stroke-opacity="0.26"></path>
+          <path d="M204 126 H218 V166 H232" fill="none" stroke="currentColor" stroke-opacity="0.26"></path>
+          <text x="238" y="90" font-family="IBM Plex Sans, sans-serif" font-size="11.5" fill="currentColor">美联储路径</text>
+          <text x="238" y="130" font-family="IBM Plex Sans, sans-serif" font-size="11.5" fill="currentColor">日本央行路径</text>
+          <text x="238" y="170" font-family="IBM Plex Sans, sans-serif" font-size="11.5" fill="currentColor">红利防守</text>
+
+          <path d="M204 246 H218 V206 H232" fill="none" stroke="currentColor" stroke-opacity="0.26"></path>
+          <path d="M204 246 H218 V246 H232" fill="none" stroke="currentColor" stroke-opacity="0.26"></path>
+          <path d="M204 246 H218 V286 H232" fill="none" stroke="currentColor" stroke-opacity="0.26"></path>
+          <text x="238" y="210" font-family="IBM Plex Sans, sans-serif" font-size="11.5" fill="currentColor">中东与原油通道</text>
+          <text x="238" y="250" font-family="IBM Plex Sans, sans-serif" font-size="11.5" fill="currentColor">俄乌战争</text>
+          <text x="238" y="290" font-family="IBM Plex Sans, sans-serif" font-size="11.5" fill="currentColor">避险与央行购金</text>
+
+          <path d="M204 526 H218 V326 H232" fill="none" stroke="#e8a33d" stroke-opacity="0.4"></path>
+          <path d="M204 526 H218 V366 H232" fill="none" stroke="#e8a33d" stroke-opacity="0.4"></path>
+          <path d="M204 526 H218 V406 H232" fill="none" stroke="#e8a33d" stroke-opacity="0.75"></path>
+          <path d="M204 526 H218 V446 H232" fill="none" stroke="#e8a33d" stroke-opacity="0.4"></path>
+          <path d="M204 526 H218 V486 H232" fill="none" stroke="#e8a33d" stroke-opacity="0.4"></path>
+          <path d="M204 526 H218 V526 H232" fill="none" stroke="#e8a33d" stroke-opacity="0.4"></path>
+          <path d="M204 526 H218 V566 H232" fill="none" stroke="#e8a33d" stroke-opacity="0.4"></path>
+          <path d="M204 526 H218 V606 H232" fill="none" stroke="#e8a33d" stroke-opacity="0.4"></path>
+          <path d="M204 526 H218 V646 H232" fill="none" stroke="#e8a33d" stroke-opacity="0.4"></path>
+          <path d="M204 526 H218 V686 H232" fill="none" stroke="#e8a33d" stroke-opacity="0.4"></path>
+          <path d="M204 526 H218 V726 H232" fill="none" stroke="#e8a33d" stroke-opacity="0.4"></path>
+          <text x="238" y="330" font-family="IBM Plex Sans, sans-serif" font-size="11.5" fill="currentColor">AI 算力芯片</text>
+          <text x="238" y="370" font-family="IBM Plex Sans, sans-serif" font-size="11.5" fill="currentColor">存储与 HBM</text>
+          <text x="238" y="410" font-family="IBM Plex Sans, sans-serif" font-size="11.5" font-weight="600" fill="#e8a33d">长鑫科技 · 单体</text>
+          <text x="238" y="450" font-family="IBM Plex Sans, sans-serif" font-size="11.5" fill="currentColor">晶圆制造与设备</text>
+          <text x="238" y="490" font-family="IBM Plex Sans, sans-serif" font-size="11.5" fill="currentColor">云厂商资本开支</text>
+          <text x="238" y="530" font-family="IBM Plex Sans, sans-serif" font-size="11.5" fill="currentColor">AI 发电</text>
+          <text x="238" y="570" font-family="IBM Plex Sans, sans-serif" font-size="11.5" fill="currentColor">电力设备与线缆</text>
+          <text x="238" y="610" font-family="IBM Plex Sans, sans-serif" font-size="11.5" fill="currentColor">光通信与互连</text>
+          <text x="238" y="650" font-family="IBM Plex Sans, sans-serif" font-size="11.5" fill="currentColor">端侧与消费电子</text>
+          <text x="238" y="690" font-family="IBM Plex Sans, sans-serif" font-size="11.5" fill="currentColor">模型与应用层</text>
+          <text x="238" y="730" font-family="IBM Plex Sans, sans-serif" font-size="11.5" fill="currentColor">机器人与具身智能</text>
+
+          <path d="M204 806 H218 V766 H232" fill="none" stroke="currentColor" stroke-opacity="0.26"></path>
+          <path d="M204 806 H218 V806 H232" fill="none" stroke="currentColor" stroke-opacity="0.26"></path>
+          <path d="M204 806 H218 V846 H232" fill="none" stroke="currentColor" stroke-opacity="0.26"></path>
+          <text x="238" y="770" font-family="IBM Plex Sans, sans-serif" font-size="11.5" fill="currentColor">加密核心资产</text>
+          <text x="238" y="810" font-family="IBM Plex Sans, sans-serif" font-size="11.5" fill="currentColor">加密股权代理</text>
+          <text x="238" y="850" font-family="IBM Plex Sans, sans-serif" font-size="11.5" fill="currentColor">链上与永续</text>
+
+          <path d="M204 906 H218 V886 H232" fill="none" stroke="currentColor" stroke-opacity="0.26"></path>
+          <path d="M204 906 H218 V926 H232" fill="none" stroke="currentColor" stroke-opacity="0.26"></path>
+          <text x="238" y="890" font-family="IBM Plex Sans, sans-serif" font-size="11.5" fill="currentColor">创新药</text>
+          <text x="238" y="930" font-family="IBM Plex Sans, sans-serif" font-size="11.5" fill="currentColor">商业航天</text>
+
+          <path d="M204 986 H218 V966 H232" fill="none" stroke="currentColor" stroke-opacity="0.26"></path>
+          <path d="M204 986 H218 V1006 H232" fill="none" stroke="currentColor" stroke-opacity="0.26"></path>
+          <text x="238" y="970" font-family="IBM Plex Sans, sans-serif" font-size="11.5" fill="currentColor">政策与流动性</text>
+          <text x="238" y="1010" font-family="IBM Plex Sans, sans-serif" font-size="11.5" fill="currentColor">国产替代</text>
+
+          <line x1="232" y1="78" x2="232" y2="174" stroke="currentColor" stroke-opacity="0.2"></line>
+          <line x1="232" y1="198" x2="232" y2="294" stroke="currentColor" stroke-opacity="0.2"></line>
+          <line x1="232" y1="318" x2="232" y2="734" stroke="#e8a33d" stroke-opacity="0.38"></line>
+          <line x1="232" y1="758" x2="232" y2="854" stroke="currentColor" stroke-opacity="0.2"></line>
+          <line x1="232" y1="878" x2="232" y2="934" stroke="currentColor" stroke-opacity="0.2"></line>
+          <line x1="232" y1="958" x2="232" y2="1014" stroke="currentColor" stroke-opacity="0.2"></line>
+        </svg>
+      </div>
+      <figcaption>AI 资本开支占 24 个赛道里的 11 个。长鑫科技以 3.31 万亿市值单独成节点——它不是「存储」赛道里的一个名字，它自己就是一个赛道。</figcaption>
+    </figure>
+
+    <div class="scroller">
+      <table>
+        <thead>
+          <tr><th style="width:24%">中观赛道</th><th style="width:38%">美股 / 海外标杆</th><th style="width:38%">A 股标杆</th></tr>
+        </thead>
+        <tbody>
+          <tr class="g-start"><td class="sector">美联储路径<span class="macro-tag">货币与利率</span></td><td class="us">DXY · SPX · 美债（宏观，无个股）</td><td class="cn">—</td></tr>
+          <tr><td class="sector">日本央行路径<span class="macro-tag">货币与利率</span></td><td class="us">日经225 · 日元 · SK海力士（韩 000660）</td><td class="cn">—</td></tr>
+          <tr><td class="sector">红利防守<span class="macro-tag">货币与利率</span></td><td class="us">SCHD · JPM</td><td class="cn">上证红利 · 长江电力 · 工商银行</td></tr>
+
+          <tr class="g-start"><td class="sector">中东与原油通道<span class="macro-tag">地缘与供应</span></td><td class="us">XOM · CVX</td><td class="cn">中国海油 · 中国石油</td></tr>
+          <tr><td class="sector">俄乌战争<span class="macro-tag">地缘与供应</span></td><td class="us">LMT · RTX · 欧洲天然气</td><td class="cn">中航沈飞 · 中兵红箭</td></tr>
+          <tr><td class="sector">避险与央行购金<span class="macro-tag">地缘与供应</span></td><td class="us">NEM · GOLD (Barrick)</td><td class="cn">山东黄金 · 紫金矿业</td></tr>
+
+          <tr class="g-start"><td class="sector">AI 算力芯片<span class="macro-tag">AI 资本开支</span></td><td class="us">NVDA · AMD · AVGO · MRVL</td><td class="cn">寒武纪 · 海光信息</td></tr>
+          <tr><td class="sector">存储与 HBM<span class="macro-tag">AI 资本开支</span></td><td class="us">MU · SNDK · WDC · SK海力士</td><td class="cn">兆易创新</td></tr>
+          <tr class="solo"><td class="sector">长鑫科技 · 单体<span class="macro-tag">AI 资本开支</span></td><td class="us">对标 MU · SK海力士（全球第四大 DRAM）</td><td class="cn">长鑫科技 <span class="code">688825</span> · A股市值第一</td></tr>
+          <tr><td class="sector">晶圆制造与设备<span class="macro-tag">AI 资本开支</span></td><td class="us">TSM · ASML · LRCX · AMAT · INTC</td><td class="cn">中芯国际 · 华虹公司 · 北方华创 · 中微公司</td></tr>
+          <tr><td class="sector">云厂商资本开支<span class="macro-tag">AI 资本开支</span></td><td class="us">MSFT · GOOGL · AMZN · META · ORCL</td><td class="cn">浪潮信息 · 中科曙光</td></tr>
+          <tr><td class="sector">AI 发电<span class="macro-tag">AI 资本开支</span></td><td class="us">CEG · VST · TLN（核电 IPP，长约锁定）</td><td class="cn">中国核电 · 长江电力</td></tr>
+          <tr><td class="sector">电力设备与线缆<span class="macro-tag">AI 资本开支</span></td><td class="us">ETN · VRT · NVT · ATKR · GEV</td><td class="cn">特变电工 · 平高电气 · 中天科技</td></tr>
+          <tr><td class="sector">光通信与互连<span class="macro-tag">AI 资本开支</span></td><td class="us">GLW · MRVL · COHR</td><td class="cn">中际旭创 · 新易盛 · 天孚通信</td></tr>
+          <tr><td class="sector">端侧与消费电子<span class="macro-tag">AI 资本开支</span></td><td class="us">AAPL · QCOM</td><td class="cn">立讯精密 · 歌尔股份</td></tr>
+          <tr><td class="sector">模型与应用层<span class="macro-tag">AI 资本开支</span></td><td class="us">PLTR · <span class="unl">OpenAI（未上市）</span> · <span class="unl">Anthropic（未上市）</span></td><td class="cn">科大讯飞 · 金山办公</td></tr>
+          <tr><td class="sector">机器人与具身智能<span class="macro-tag">AI 资本开支</span></td><td class="us">TSLA · <span class="unl">Figure（未上市）</span></td><td class="cn">宇树科技 <span class="code">688836</span> · 汇川技术 · 绿的谐波</td></tr>
+
+          <tr class="g-start"><td class="sector">加密核心资产<span class="macro-tag">风险偏好·加密</span></td><td class="us">BTC · ETH</td><td class="cn">—</td></tr>
+          <tr><td class="sector">加密股权代理<span class="macro-tag">风险偏好·加密</span></td><td class="us">COIN · MSTR · HOOD</td><td class="cn">—（A股无直接标的）</td></tr>
+          <tr><td class="sector">链上与永续<span class="macro-tag">风险偏好·加密</span></td><td class="us">HYPE · Hyperliquid</td><td class="cn">—</td></tr>
+
+          <tr class="g-start"><td class="sector">创新药<span class="macro-tag">独立产业周期</span></td><td class="us">LLY · NVO · VRTX · REGN</td><td class="cn">恒瑞医药 · 百济神州 · 药明康德</td></tr>
+          <tr><td class="sector">商业航天<span class="macro-tag">独立产业周期</span></td><td class="us">RKLB · ASTS · <span class="unl">SpaceX（未上市）</span></td><td class="cn">中国卫星 · 航天电子 · 上海瀚讯</td></tr>
+
+          <tr class="g-start"><td class="sector">政策与流动性<span class="macro-tag">中国政策周期</span></td><td class="us">—</td><td class="cn">上证 · 科创50 · 上证红利（整体 beta）</td></tr>
+          <tr><td class="sector">国产替代<span class="macro-tag">中国政策周期</span></td><td class="us">—</td><td class="cn">横向驱动：作用于上方全部 A 股标的</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="legend">
+    <span><span class="dot" style="background:var(--accent)"></span>AI 资本开支 · 24 个赛道占 11 个</span>
+    <span><span class="dot" style="background:var(--cn)"></span>A 股 / 中国标的</span>
+    <span><span class="dot" style="background:var(--unl)"></span>未上市 · listed: false，不分配市场代码</span>
+  </div>
+
+  <div class="callouts">
+    <div class="callout">
+      <div class="ch">AI 电力为什么拆成两条：驱动逻辑不同</div>
+      <p><strong>AI 发电</strong>靠的是长约锁定的电价和核电稀缺性。三家核电 IPP 都已签下实打实的长单：CEG 22GW 核电、全美最大商业核电运营商，供电微软（三哩岛重启）并于 2025 年与 Meta 签 20 年 1.1GW，Q1 2026 营收同比 +64%；VST 2026 年 1 月与 Meta 签 20 年、2.1GW+ 核电；TLN 与亚马逊扩约至 2042 年、最高 1,920MW。核电吃到这波是因为容量因子 92%，风光（25% / 35%）扛不住 AI 的基荷需求。</p>
+      <p><strong>电力设备与线缆</strong>靠的是资本开支周期的订单量。ETN 覆盖变压器、开关柜、UPS 与液冷，FY2026 有机增长指引从 8% 上调到 10%；VRT 在手订单已超 150 亿美元；ATKR 做线管、桥架、支架，是最贴近「电缆」那一层的标的。背景是超大规模厂商 2026 年 AI 资本开支上调到 7,500 亿美元，2027 年预计破万亿。</p>
+    </div>
+
+    <div class="callout">
+      <div class="ch">长鑫科技为什么单独成节点</div>
+      <p>2026-07-27 科创板上市，代码 <strong>688825</strong>。发行价 8.66 元，首日开盘 49.5 元涨 471%，<strong>总市值 3.31 万亿，A股第一</strong>；募资规模超过 2020 年中芯国际，是科创板史上最大 IPO。主营 DRAM，中国第一、全球第四。</p>
+      <p>以这个体量，它符合 Park 说的「像英伟达这样的公司足够大，它自己就可以当成一个板块」。<strong>Park 持有科创50，长鑫几乎必然是其中权重最重的成分股之一——它的新闻基本等同于科创50 仓位的新闻。</strong></p>
+    </div>
+  </div>
+
+  <section>
+    <h2>本版改动</h2>
+    <p><strong>删除「出口管制与台海」赛道。</strong>原挂在这条下的 INTC 与华虹公司已并入「晶圆制造与设备」，没有标的因此掉队。出口管制作为事件仍可由 macro 类型的 target 捕捉，不需要单独占一个赛道。</p>
+    <p><strong>AI 电力拆为「AI 发电」与「电力设备与线缆」两条</strong>，理由见上方说明。</p>
+    <p><strong>光通信仍然不是电力。</strong>光通信解决「数据在机柜之间怎么传」（光模块、光纤、DSP），电力解决「电从哪来」。两个都是 AI 算力的瓶颈，但是不同的瓶颈。你说的「新能源＝算力＋电力＋存储」在这棵树里对应四个独立赛道（算力芯片、发电、电力设备、存储），不是一个。</p>
+  </section>
+
+  <section>
+    <h2>规模与缺口</h2>
+    <p>相对现有 SEC EDGAR watchlist（20 个 ticker），本版是 <strong>6 条宏观 / 24 赛道 / 约 80 个标的，其中 A 股约 32 个</strong>——名单要扩到接近四倍。</p>
+    <p>更关键的是：<strong>现有采集只有 SEC EDGAR 覆盖美股 filings，这 32 个 A 股标的目前没有任何专门的数据接入。</strong>CLS 和东财每天产出大量 A 股新闻，但系统没有名单去认领它们——这正是 exposure 过滤把大量 A 股内容判为 unmatched 的原因。</p>
+  </section>
+
+  <footer>
+    v4 · 待 Park 定稿后作为 Park Exposure Registry 的初始结构<br>
+    长鑫科技 688825（2026-07-27 上市）· 宇树科技 688836（2026-08-19 上市）· 均已核实<br>
+    A 股其余标的仅给名称，数字代码由 Codex 实施时统一解析；未上市公司一律 listed: false
+  </footer>
+</div>
+
+</body>
+</html>
