@@ -4,7 +4,7 @@
 
 - 数据：[`watchlist.yaml`](watchlist.yaml)
 - 可视化：[`index.html`](index.html) · 三层归属树
-- 当前版本：v4（2026-09-03）· 16 个资产 · 6 条宏观主线 · 24 个中观赛道 · 109 个 target
+- 当前版本：v5（2026-09-03）· 16 个资产 · 6 条宏观主线 · 25 个中观赛道 · 115 个 target
 
 ---
 
@@ -59,7 +59,7 @@ root
 ## 四条硬规则
 
 1. **每个 target 必须有 `reason`。** 写明它为什么在表里（持仓 / thesis / 研究兴趣）。无 reason 不入表——这是防止列表随时间腐烂的唯一机制。
-2. **未上市公司 `listed: false`，绝不编造市场代码。** 当前未上市：OpenAI、Anthropic、SpaceX、Figure、Hyperliquid。
+2. **未上市公司 `listed: false`，绝不编造市场代码。** 当前未上市：OpenAI、Anthropic、GitHub、SpaceX、Figure、Hyperliquid。
 3. **允许多归属。** 一个 target 可出现在多个 sector 下（如 TSM 同属晶圆制造与其他链条）。强行单亲会丢信息。
 4. **命中 target ≠ 重要。** 这一层只回答「这条新闻值不值得让 AI 看」；High / Watch / Noise 的判断是下游 triage 的事。
 
@@ -115,6 +115,7 @@ tradable = [a["id"] for a in reg["assets"]]
 | 版本 | 日期 | 变更 |
 |---|---|---|
 | v4 | 2026-09-03 | 删除「出口管制与台海」赛道（INTC/华虹并入晶圆制造）；AI 电力拆为「AI 发电」与「电力设备与线缆」 |
+| v5 | 2026-09-03 | 新增 MiniMax、智谱、GitHub、腾讯、阿里巴巴、拼多多；新增「大消费与平台」赛道；确认 Robinhood 已在册 |
 | v3 | 2026-09-03 | 长鑫科技 688825 单独成节点；宇树科技 688836 归位；核实两家上市状态 |
 | v2 | 2026-09-03 | 每赛道补齐美股 + A 股标杆；新增俄乌战争、创新药、商业航天、机器人、AI 电力 |
 | v1 | 2026-09-03 | 三层结构首版：5 宏观 / 18 赛道 |

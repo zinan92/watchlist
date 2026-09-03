@@ -9,7 +9,7 @@
 #   3. 允许多归属：一个 target 可出现在多个 sector 下（如 TSM）。
 #   4. assets 段是 Park 实际有行情/K 线的对象，与 targets 是两件事，不要混。
 
-version: 4
+version: 5
 updated: "2026-09-03"
 maintainer: park
 
@@ -224,6 +224,9 @@ sectors:
       - {type: company, id: PLTR, name: Palantir, market: US, listed: true, reason: Park指定}
       - {type: company, id: openai,    name: OpenAI,    listed: false, reason: "AI发展是Park四件事之首；未上市，不分配代码"}
       - {type: company, id: anthropic, name: Anthropic, listed: false, reason: "同上"}
+      - {type: company, id: "00100", name: MiniMax, market: HK, listed: true, reason: "Park指定；AI模型与应用层重要观察对象"}
+      - {type: company, id: "02513", name: 智谱, market: HK, listed: true, reason: "Park指定；AI模型与应用层重要观察对象"}
+      - {type: company, id: github, name: GitHub, listed: false, reason: "Park指定；开发者与AI生态基础设施观察对象；非独立上市公司"}
       - {type: company, id: 科大讯飞, market: CN, listed: true, reason: A股标杆}
       - {type: company, id: 金山办公, market: CN, listed: true, reason: A股标杆}
 
@@ -275,6 +278,14 @@ sectors:
       - {type: company, id: 恒瑞医药, market: CN, listed: true, reason: A股标杆}
       - {type: company, id: 百济神州, market: CN, listed: true, reason: A股标杆}
       - {type: company, id: 药明康德, market: CN, listed: true, reason: A股CXO标杆}
+
+  - id: platform_consumer
+    name: 大消费与平台
+    macro: standalone_cycle
+    targets:
+      - {type: company, id: PDD, name: 拼多多, market: US, listed: true, reason: "Park指定；纳斯达克上市的大消费与平台经济观察对象"}
+      - {type: company, id: "00700", name: 腾讯, market: HK, listed: true, reason: "Park指定；港股平台、消费与AI生态观察对象"}
+      - {type: company, id: "09988", name: 阿里巴巴, market: HK, listed: true, reason: "Park指定；港股平台、消费与云业务观察对象"}
 
   - id: commercial_space
     name: 商业航天
