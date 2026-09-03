@@ -9,7 +9,7 @@
 #   3. 允许多归属：一个 target 可出现在多个 sector 下（如 TSM）。
 #   4. assets 段是 Park 实际有行情/K 线的对象，与 targets 是两件事，不要混。
 
-version: 5
+version: 6
 updated: "2026-09-03"
 maintainer: park
 
@@ -35,6 +35,31 @@ assets:
   - {id: XAG,        name: 白银,             market: COMDTY, kind: commodity}
 
 # ---------------------------------------------------------------------------
+# 新闻 exposure 的确定性别名。只负责把新闻送进 AI triage，不决定 High /
+# Watch / Noise / Unknown。target 引用下面 sectors 中已有的 target id。
+# ---------------------------------------------------------------------------
+matching:
+  version: 1
+  content_chars: 2000
+  aliases:
+    - {id: ai_development, target: ai-development, terms: [AI, 人工智能, 大模型, 生成式AI, 生成式 AI, 算力, GPU, 数据中心, AI服务器, AI编程, AI模型, AI应用, Agent, 智能体, 模型训练, 模型推理, Token, 词元, Kimi, 商汤]}
+    - {id: ai_compute, target: ai-compute, terms: [GPU, HBM, AI芯片, 算力芯片, 半导体, 芯片]}
+    - {id: electronic_components, target: electronic-components, terms: [MLCC, 电子元件, 被动元件, 电容]}
+    - {id: optical_communication, target: optical-communication, terms: [光通信, 光模块, InP, CPO, NPO, 光纤]}
+    - {id: embodied_ai, target: embodied-ai, terms: [具身智能, 人形机器人]}
+    - {id: innovative_drugs, target: innovative-drugs, terms: [创新医药, 生物医药, 新药, 药物, 药品, 药业, 临床, 治疗, 医保, 肿瘤, 抗体, 疫苗, GLP-1, ADC, 制药, 药企, 病种]}
+    - {id: ai_generation, target: ai-generation, terms: [核电, 核能, 电力供应, AI发电, 数据中心用电]}
+    - {id: power_equipment, target: power-equipment, terms: [变压器, UPS, 开关柜, 电缆, 线缆, 电力设备]}
+    - {id: commercial_space, target: commercial-space, terms: [商业航天, 火箭, 卫星互联网]}
+    - {id: hormuz_strait, target: hormuz-strait, terms: [霍尔木兹, Hormuz]}
+    - {id: opec, target: opec, terms: [OPEC]}
+    - {id: russia_ukraine, target: russia-ukraine-war, terms: [俄乌, 俄罗斯, 乌克兰]}
+    - {id: geopolitical_crisis, target: geopolitical-crisis, terms: [地缘冲突, 地缘危机, 伊朗, 以色列, 红海, 制裁, 关税, 导弹, 空袭, 油轮, 台海, 南海, 马岛]}
+    - {id: federal_reserve, target: federal-reserve, terms: [美联储, 联储, Fed, FOMC, 鲍威尔, Powell, NFP, 非农, CPI, PCE, 降息, 加息, 国债收益率, Treasury]}
+    - {id: bank_of_japan, target: bank-of-japan, terms: [日本央行, 日银, BOJ, 植田, YCC, 日债, 日元, 干预]}
+    - {id: platform_consumer, target: platform-consumer, terms: [拼多多, Pinduoduo, PDD, 腾讯, Tencent, 微信, 阿里巴巴, Alibaba, 阿里云, 天猫, 淘宝, Temu]}
+
+# ---------------------------------------------------------------------------
 # 宏观主线（6 条）
 # ---------------------------------------------------------------------------
 macros:
@@ -46,7 +71,7 @@ macros:
     note: Park 自述四件事之一
   - id: ai_capex
     name: AI 资本开支
-    note: Park 自述四件事之首；24 个赛道里占 11 个
+    note: Park 自述四件事之首；26 个赛道里占 11 个
   - id: risk_crypto
     name: 风险偏好与加密
   - id: standalone_cycle
@@ -56,7 +81,7 @@ macros:
     name: 中国政策周期
 
 # ---------------------------------------------------------------------------
-# 中观赛道（24 个）与微观标的
+# 中观赛道（26 个）与微观标的
 # ---------------------------------------------------------------------------
 sectors:
 
@@ -118,6 +143,8 @@ sectors:
     name: AI 算力芯片
     macro: ai_capex
     targets:
+      - {type: theme, id: ai-compute, name: AI算力与基础设施, listed: false, reason: "Park指定；AI基础设施主线的通用主题入口"}
+      - {type: theme, id: electronic-components, name: 电子元件与被动件, listed: false, reason: "Park指定；MLCC等AI硬件供应链的主题入口"}
       - {type: company, id: NVDA, name: 英伟达,   market: US, listed: true, reason: 赛道龙头, note: 体量足以自成板块}
       - {type: company, id: AMD,  name: 美国超威, market: US, listed: true, reason: Park指定}
       - {type: company, id: AVGO, name: 博通,     market: US, listed: true, reason: Park指定}
@@ -175,6 +202,7 @@ sectors:
     macro: ai_capex
     note: 驱动=长约锁定电价+核电稀缺性(容量因子92%)，与设备侧的订单量逻辑不同
     targets:
+      - {type: theme, id: ai-generation, name: AI发电, listed: false, reason: "Park指定；区分AI算力增长带来的发电需求"}
       - {type: company, id: CEG, name: Constellation, market: US, listed: true, reason: "22GW核电，供电微软/Meta 20年1.1GW长约"}
       - {type: company, id: VST, name: Vistra,        market: US, listed: true, reason: "2026-01与Meta签20年2.1GW+核电长约"}
       - {type: company, id: TLN, name: Talen,         market: US, listed: true, reason: "亚马逊Susquehanna长约至2042年，最高1920MW"}
@@ -186,6 +214,7 @@ sectors:
     macro: ai_capex
     note: 驱动=资本开支周期订单量；超大规模厂商2026年AI capex约7500亿美元
     targets:
+      - {type: theme, id: power-equipment, name: 电力设备与线缆, listed: false, reason: "Park指定；区分发电侧与输配电设备侧"}
       - {type: company, id: ETN,  name: 伊顿,     market: US, listed: true, reason: "变压器/开关柜/UPS/液冷，FY2026有机增长指引上调至10%"}
       - {type: company, id: VRT,  name: Vertiv,   market: US, listed: true, reason: "UPS+精密冷却，在手订单超150亿美元"}
       - {type: company, id: NVT,  name: nVent,    market: US, listed: true, reason: 电气保护}
@@ -221,6 +250,7 @@ sectors:
     name: 模型与应用层
     macro: ai_capex
     targets:
+      - {type: theme, id: ai-development, name: AI发展, listed: false, reason: "Park指定；AI发展是Park四件事之首，承接不点名具体公司的AI新闻"}
       - {type: company, id: PLTR, name: Palantir, market: US, listed: true, reason: Park指定}
       - {type: company, id: openai,    name: OpenAI,    listed: false, reason: "AI发展是Park四件事之首；未上市，不分配代码"}
       - {type: company, id: anthropic, name: Anthropic, listed: false, reason: "同上"}
@@ -283,9 +313,16 @@ sectors:
     name: 大消费与平台
     macro: standalone_cycle
     targets:
+      - {type: theme, id: platform-consumer, name: 大消费与平台, listed: false, reason: "Park指定；不点名单一公司的平台与消费行业新闻入口"}
       - {type: company, id: PDD, name: 拼多多, market: US, listed: true, reason: "Park指定；纳斯达克上市的大消费与平台经济观察对象"}
       - {type: company, id: "00700", name: 腾讯, market: HK, listed: true, reason: "Park指定；港股平台、消费与AI生态观察对象"}
       - {type: company, id: "09988", name: 阿里巴巴, market: HK, listed: true, reason: "Park指定；港股平台、消费与云业务观察对象"}
+
+  - id: geopolitical_crisis
+    name: 地缘冲突
+    macro: geopolitics
+    targets:
+      - {type: macro, id: geopolitical-crisis, name: 地缘冲突, listed: false, reason: "Park指定；承接不局限于中东或俄乌的地缘事件"}
 
   - id: commercial_space
     name: 商业航天
